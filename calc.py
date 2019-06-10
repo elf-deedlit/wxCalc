@@ -128,6 +128,15 @@ class main_frame(wx.Frame):
         if rslt > self.effective_digit:
             self.effective_digit = rslt
 
+    def result_copy(self):
+        '''結果コピー'''
+        if self.result_panel.CanCopy():
+            self.result_panel.Copy()
+    
+    def result_all_select(self):
+        '''結果全選択'''
+        self.result_panel.SelectAll()
+
     def select_char(self, keycode, key=None):
         '''押されたキーの処理'''
         code = chr(keycode)
@@ -154,9 +163,14 @@ class main_frame(wx.Frame):
                 if key == wx.WXK_HOME:
                     self.clear_calc()
                     self.view_formula([])
+                elif key == wx.WXK_CONTROL_C:
+                    self.result_copy()
+                elif key == wx.WXK_CONTROL_A:
+                    self.result_all_select()
+                # elif key == wx.WXK_CONTROL_V:
+                #     # 貼り付け
                 # else:
                 #     print('WXK_NONE({0})'.format(key))
-                #     print('WXK_HOME({0})'.format(wx.WXK_HOME))
 
     def on_char(self, ev):
         '''入力をもらっておく'''
@@ -192,9 +206,6 @@ class main_frame(wx.Frame):
         rslt = []
         for v in self.calculation:
             assert not isinstance(v, (int, float))
-            # if isinstance(v, (int, float)):
-            #     print('integer?:{0}'.format(v))
-            #     v = str(v)
             if convert:
                 if v == '/':
                     v = u'÷'
@@ -234,7 +245,7 @@ class main_frame(wx.Frame):
             if not rslt.is_integer:
                 effective_digit = self.effective_digit
                 if effective_digit == 0:
-                    effective_digit = 30
+                    effective_digit = 15
                 # 整数部の桁数を見る
                 int_digit = len(str(int(rslt)))
                 effective_digit += int_digit
