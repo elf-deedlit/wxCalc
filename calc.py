@@ -4,6 +4,7 @@
 wx Calc
 '''
 import wx
+import wx.lib.buttons as Button
 from sympy import S
 from sympy.core.sympify import SympifyError
 
@@ -26,36 +27,25 @@ class main_frame(wx.Frame):
         # 初期化
         self.clear_calc()
 
+    BUTTON_LABELS = 'Ｃ＋－×÷１２３４５６７８９０＝．'
     def make_button(self):
         '''ボタンを作成する'''
         parent = self
-        self.btn = (
-            wx.Button(parent, label=u'Ｃ'),
-            wx.Button(parent, label=u'＋'),
-            wx.Button(parent, label=u'－'),
-            wx.Button(parent, label=u'×'),
-            wx.Button(parent, label=u'÷'),
-            wx.Button(parent, label=u'１'), # 5
-            wx.Button(parent, label=u'２'),
-            wx.Button(parent, label=u'３'),
-            wx.Button(parent, label=u'４'),
-            wx.Button(parent, label=u'５'),
-            wx.Button(parent, label=u'６'), # 10
-            wx.Button(parent, label=u'７'),
-            wx.Button(parent, label=u'８'),
-            wx.Button(parent, label=u'９'),
-            wx.Button(parent, label=u'０'),
-            wx.Button(parent, label=u'＝'), # 15
-            wx.Button(parent, label=u'．'),
-        )
+        btn = []
+        for v in self.BUTTON_LABELS:
+            btn.append(Button.GenButton(parent, label=v))
         # font変更
         font = wx.Font(18, wx.FONTFAMILY_DEFAULT,
             wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, faceName=u'メイリオ')
-        for btn in self.btn:
-            btn.SetFont(font)
+        for v in btn:
+            v.SetFont(font)
+            v.SetBezelWidth(5)
+            v.SetMinSize(wx.DefaultSize)
             # 親にイベントを渡す
-            btn.Bind(wx.EVT_CHAR, lambda x: wx.PostEvent(parent, x))
-            btn.Bind(wx.EVT_LEFT_UP, self.btn_press)
+            v.Bind(wx.EVT_CHAR, lambda x: wx.PostEvent(parent, x))
+            v.Bind(wx.EVT_LEFT_UP, self.btn_press)
+        
+        self.btn = btn
 
     def make_text_panel(self):
         '''結果出力用パネルを作る'''
@@ -75,7 +65,7 @@ class main_frame(wx.Frame):
     def make_panel(self):
         '''メインパネルの作成'''
         layout = wx.GridBagSizer(5, 5)
-        layout_flag = wx.EXPAND | wx.ALL
+        layout_flag = wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE
         btn = self.btn
         layout.Add(self.result_panel, (0, 0), (1, 4), flag=layout_flag)
         layout.Add(btn[0], (1, 0), (1, 1), flag=layout_flag)
