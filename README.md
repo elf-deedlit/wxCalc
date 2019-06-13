@@ -1,7 +1,10 @@
 # wxCalc
 計算式の電卓
-## このソフトの目的
-久しぶりにwxPythonを触ったらバージョンが結構上がっていたので勉強のため作成
+## 目的
+久しぶりにwxPythonを触ったらバージョンが結構上がっていたのでVisualStudioCodeの勉強もかねて作成
+## 使い方
+* 対応はPython3のみ
+* モジュールとしてwxPythonとsympyが必須
 ## 使い方
 * 普通の(?)電卓と同じように計算式を入れてEnterキーを押して結果を表示するだけ
 * クリアのショートカットはHomeキー
@@ -17,3 +20,4 @@
 * WindowsのPostMessageみたいのをwxPythonで行うにはどうすればいいんだろう?<br />
 wxPostEventはちょっと目的が違うみたいだし
 * wxSizerは便利だよね
+* 頑張ればwxGridBagSizerじゃなくてwxBoxSizerで出来そうだけどちょっと難易度が高かった
